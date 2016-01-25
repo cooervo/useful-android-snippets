@@ -53,6 +53,8 @@ Helper class to help verify if strings are name, last names, phone number and em
   
   ------------------------------
   
+  
+  
   # EditText TextValidator
   
   An abstract class with abstract method `validate()` to let subclass to customize its implementation
