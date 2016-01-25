@@ -51,11 +51,12 @@ Helper class to help verify if strings are name, last names, phone number and em
     }
   }
   
-  ------------------------------
-  
+------------------------------
+------------------------------
   
   
   # EditText TextValidator
+  
   
   An abstract class with abstract method `validate()` to let subclass to customize its implementation
   
@@ -78,37 +79,37 @@ Helper class to help verify if strings are name, last names, phone number and em
  Class code: 
  
      public abstract class TextValidator implements TextWatcher {
-   
-     private final TextView textView; //Remember EditText is a TextView so this works for EditText also
-
-     public TextValidator(TextView tV){
-        textView = tV;
-     }
-
-     /**
-     * Notice abstract method so we make a contract that every instance of TextValidator must implement
-     * it's own version of the validate() method, since each editText needs its own validation.
-     *
-     * @param tV
-     * @param text
-     */
-     public abstract void validate(TextView tV, String text);
-
-     @Override
-     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-     }
-
-     @Override
-     public void onTextChanged(CharSequence s, int start, int before, int count) {
- 
-     }
-
-     @Override
-     public void afterTextChanged(Editable s) {
-        String text = textView.getText().toString();
-        validate(textView, text); //Notice this is the part that applies validate afterTextChanged()
-     }
+       
+         private final TextView textView; //Remember EditText is a TextView so this works for EditText also
+    
+         public TextValidator(TextView tV){
+            textView = tV;
+         }
+    
+         /**
+         * Notice abstract method so we make a contract that every instance of TextValidator must implement
+         * it's own version of the validate() method, since each editText needs its own validation.
+         *
+         * @param tV
+         * @param text
+         */
+         public abstract void validate(TextView tV, String text);
+    
+         @Override
+         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    
+         }
+    
+         @Override
+         public void onTextChanged(CharSequence s, int start, int before, int count) {
+     
+         }
+    
+         @Override
+         public void afterTextChanged(Editable s) {
+            String text = textView.getText().toString();
+            validate(textView, text); //Notice this is the part that applies validate afterTextChanged()
+         }
      }
 
 --------------------------------
@@ -118,72 +119,72 @@ Helper class to help verify if strings are name, last names, phone number and em
 Singleton is encouraged by Android documentation instead of using Application class and it is great use for models in MVP pattern. This singleton pattern is based on Head First Java Singletton example.
 
     public class SharedData {
-
-    //Volatile keyword ensures that multiple threads handle the unique/instance correctly
-    private volatile static SharedData uniqueInstance;
-
-    // ~~~~~~~~~~~~~~~ Configuration of device ~~~~~~~~~~~~~~~
-    private int screenWidth;
-    private int screenHeight;
     
-    // ~~~~~~~~~~~~~~~ Fonts ~~~~~~~~~~~~~~~
-    private Typeface main;
-    private Typeface secondary;
+        //Volatile keyword ensures that multiple threads handle the unique/instance correctly
+        private volatile static SharedData uniqueInstance;
     
-    //Private constructor as we don't need any more instances of this singleton
-    private SharedData() {
-    }
-
-    /**
-     * Creates once and only once an instance of this class and returns this instance
-     *
-     * @return
-     */
-    public static SharedData getInstance() {
-    //Check for an instance and if there isn't one enter the synchronized method
-        if (uniqueInstance == null) {
-            synchronized (SharedData.class) {
-                //Once in the block, check again and if still null, create the instance
-                if (uniqueInstance == null) {
-                    uniqueInstance = new SharedData();
+        // ~~~~~~~~~~~~~~~ Configuration of device ~~~~~~~~~~~~~~~
+        private int screenWidth;
+        private int screenHeight;
+        
+        // ~~~~~~~~~~~~~~~ Fonts ~~~~~~~~~~~~~~~
+        private Typeface main;
+        private Typeface secondary;
+        
+        //Private constructor as we don't need any more instances of this singleton
+        private SharedData() {
+        }
+    
+        /**
+         * Creates once and only once an instance of this class and returns this instance
+         *
+         * @return
+         */
+        public static SharedData getInstance() {
+        //Check for an instance and if there isn't one enter the synchronized method
+            if (uniqueInstance == null) {
+                synchronized (SharedData.class) {
+                    //Once in the block, check again and if still null, create the instance
+                    if (uniqueInstance == null) {
+                        uniqueInstance = new SharedData();
+                    }
                 }
             }
-        }
-
-        return uniqueInstance;
-    }
     
-    public Typeface getMainFont() {
-        return main;
-    }
-
-    public void setMainFont(Context context) {
-        main = Typeface.createFromAsset(context.getAssets(), "fonts/VarelaRound-Regular.ttf");
-    }
-
-    public Typeface getSecondaryFont() {
-        return secondary;
-    }
-
-    public void setSecondaryFont(Context context) {
-        secondary = Typeface.createFromAsset(context.getAssets(), "fonts/Abel-Regular.ttf");
-    }
-
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
-
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
-    }
+            return uniqueInstance;
+        }
+        
+        public Typeface getMainFont() {
+            return main;
+        }
+    
+        public void setMainFont(Context context) {
+            main = Typeface.createFromAsset(context.getAssets(), "fonts/VarelaRound-Regular.ttf");
+        }
+    
+        public Typeface getSecondaryFont() {
+            return secondary;
+        }
+    
+        public void setSecondaryFont(Context context) {
+            secondary = Typeface.createFromAsset(context.getAssets(), "fonts/Abel-Regular.ttf");
+        }
+    
+        public int getScreenWidth() {
+            return screenWidth;
+        }
+    
+        public void setScreenWidth(int screenWidth) {
+            this.screenWidth = screenWidth;
+        }
+    
+        public int getScreenHeight() {
+            return screenHeight;
+        }
+    
+        public void setScreenHeight(int screenHeight) {
+            this.screenHeight = screenHeight;
+        }
    }
 
 ---------
@@ -196,30 +197,30 @@ Helper class that takes a number and formats it into a suitable string represent
 * for example: 0.23213132 into 0.23
 * for example: 10.000123 into 10
  
-    public class PriceFormatter {
-
-    //Create an instance of DecimalFormat
-    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-
-    //Now we need instance of DecimalFormatSymbols to use , to separate thousands i.e: 1,000
-    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-
-    public PriceFormatter() {
-        //Sets the maximum number of digits after the decimal point
-        formatter.setMaximumFractionDigits(2);
-        //Sets the minimum number of digits after the decimal point
-        formatter.setMinimumFractionDigits(0);
-
-        //Set char ',' as the grouping separator
-        symbols.setGroupingSeparator(',');
-        //Now set for the DecimalFormatter the thousands separator
-        formatter.setDecimalFormatSymbols(symbols);
-    }
-
-    public String formatPrice(BigDecimal decimal){
-        return formatter.format(decimal);
-    }
-   }
+      public class PriceFormatter {
+    
+        //Create an instance of DecimalFormat
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+    
+        //Now we need instance of DecimalFormatSymbols to use , to separate thousands i.e: 1,000
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+    
+        public PriceFormatter() {
+            //Sets the maximum number of digits after the decimal point
+            formatter.setMaximumFractionDigits(2);
+            //Sets the minimum number of digits after the decimal point
+            formatter.setMinimumFractionDigits(0);
+    
+            //Set char ',' as the grouping separator
+            symbols.setGroupingSeparator(',');
+            //Now set for the DecimalFormatter the thousands separator
+            formatter.setDecimalFormatSymbols(symbols);
+        }
+    
+        public String formatPrice(BigDecimal decimal){
+            return formatter.format(decimal);
+        }
+      }
 
 
 ------------
@@ -237,58 +238,58 @@ Save custom objects in InternalStorage:
 
      public final class InternalStorage {
 
-    private InternalStorage() { }
-
-    /**
-     * Pass a context/activity/service and String key to identify the object you are saving
-     *
-     * @param context
-     * @param key
-     * @param object
-     */
-    public static void writeObject(Context context, String key, Object object) {
-
-        try {
-
-            FileOutputStream fos = context.openFileOutput(key, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(object);
-            oos.close();
-            fos.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        private InternalStorage() { }
+    
+        /**
+         * Pass a context/activity/service and String key to identify the object you are saving
+         *
+         * @param context
+         * @param key
+         * @param object
+         */
+        public static void writeObject(Context context, String key, Object object) {
+    
+            try {
+    
+                FileOutputStream fos = context.openFileOutput(key, Context.MODE_PRIVATE);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(object);
+                oos.close();
+                fos.close();
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    /**
-     * Use context/activity/service and a key to retrieve the object
-     *
-     * @param context
-     * @param key
-     * @return
-     */
-    public static Object readObject(Context context, String key) {
-
-        Object object = null;
-
-        try {
-
-            FileInputStream fis = context.openFileInput(key);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            object = ois.readObject();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-            return object;
-        }
-     }
+    
+        /**
+         * Use context/activity/service and a key to retrieve the object
+         *
+         * @param context
+         * @param key
+         * @return
+         */
+        public static Object readObject(Context context, String key) {
+    
+            Object object = null;
+    
+            try {
+    
+                FileInputStream fis = context.openFileInput(key);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                object = ois.readObject();
+    
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+    
+                return object;
+            }
+         }
     }
   
  
@@ -299,39 +300,39 @@ Save custom objects in InternalStorage:
 A class that uses base 64 to encode and decode strings
 
     public class EncoderDecoder {
-
-    public EncoderDecoder(){
-    }
-
-    public String encodeString(String s) {
-        byte[] data = new byte[0];
-
-        try {
-            data = s.getBytes("UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } finally {
-            String base64Encoded = Base64.encodeToString(data, Base64.DEFAULT);
-
-            return base64Encoded;
-
+    
+        public EncoderDecoder(){
         }
-    }
-
-    public String decodeString(String encoded) {
-        byte[] dataDec = Base64.decode(encoded, Base64.DEFAULT);
-        String decodedString = "";
-        try {
-
-            decodedString = new String(dataDec, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-
-        } finally {
-
-            return decodedString;
+    
+        public String encodeString(String s) {
+            byte[] data = new byte[0];
+    
+            try {
+                data = s.getBytes("UTF-8");
+    
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } finally {
+                String base64Encoded = Base64.encodeToString(data, Base64.DEFAULT);
+    
+                return base64Encoded;
+    
+            }
         }
-     }
+    
+        public String decodeString(String encoded) {
+            byte[] dataDec = Base64.decode(encoded, Base64.DEFAULT);
+            String decodedString = "";
+            try {
+    
+                decodedString = new String(dataDec, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+    
+            } finally {
+    
+                return decodedString;
+            }
+         }
     }
 
