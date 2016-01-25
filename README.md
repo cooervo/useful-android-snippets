@@ -53,7 +53,7 @@ Helper class to help verify if strings are name, last names, phone number and em
   
   ------------------------------
   
-  #EditText TextValidator
+  # EditText TextValidator
   
   An abstract class with abstract method `validate()` to let subclass to customize its implementation
   
@@ -72,48 +72,50 @@ Helper class to help verify if strings are name, last names, phone number and em
             }
         });
   
-  
-    public abstract class TextValidator implements TextWatcher {
+ 
+ Class code: 
+ 
+     public abstract class TextValidator implements TextWatcher {
    
-    private final TextView textView; //Remember EditText is a TextView so this works for EditText also
+     private final TextView textView; //Remember EditText is a TextView so this works for EditText also
 
-    public TextValidator(TextView tV){
+     public TextValidator(TextView tV){
         textView = tV;
-    }
+     }
 
-    /**
+     /**
      * Notice abstract method so we make a contract that every instance of TextValidator must implement
      * it's own version of the validate() method, since each editText needs its own validation.
      *
      * @param tV
      * @param text
      */
-    public abstract void validate(TextView tV, String text);
+     public abstract void validate(TextView tV, String text);
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+     @Override
+     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    }
+     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+     @Override
+     public void onTextChanged(CharSequence s, int start, int before, int count) {
+ 
+     }
 
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
+     @Override
+     public void afterTextChanged(Editable s) {
         String text = textView.getText().toString();
         validate(textView, text); //Notice this is the part that applies validate afterTextChanged()
-    }
-   }
+     }
+     }
 
 --------------------------------
 
-#Singleton example
+# Singleton example
 
 Singleton is encouraged by Android documentation instead of using Application class and it is great use for models in MVP pattern. This singleton pattern is based on Head First Java Singletton example.
 
-   public class SharedData {
+    public class SharedData {
 
     //Volatile keyword ensures that multiple threads handle the unique/instance correctly
     private volatile static SharedData uniqueInstance;
@@ -186,12 +188,13 @@ Singleton is encouraged by Android documentation instead of using Application cl
 # PriceFormatter
 
 Helper class that takes a number and formats it into a suitable string representation of price
- * for example: 1000 into 1,000
- * for example: 1000.993232 into 1,000.99
- * for example: 0.23213132 into 0.23
- * for example: 10.000123 into 10
  
-   public class PriceFormatter {
+* for example: 1000 into 1,000
+* for example: 1000.993232 into 1,000.99
+* for example: 0.23213132 into 0.23
+* for example: 10.000123 into 10
+ 
+    public class PriceFormatter {
 
     //Create an instance of DecimalFormat
     DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
@@ -219,18 +222,18 @@ Helper class that takes a number and formats it into a suitable string represent
 
 ------------
 
-#InternalStorage
+# InternalStorage
 
 Save custom objects in InternalStorage:
  
 * To write:
-   CustomObject myObject = new CustomObject();
-   InternalStorage.writeObject(context, "keyExample", myObject);
+     CustomObject myObject = new CustomObject();
+     InternalStorage.writeObject(context, "keyExample", myObject);
  
  *To read:
-   CustomObject myReadObject = (CustomObject) InternalStorage.readObject(context, "keyExample");
+     CustomObject myReadObject = (CustomObject) InternalStorage.readObject(context, "keyExample");
 
-   public final class InternalStorage {
+     public final class InternalStorage {
 
     private InternalStorage() { }
 
@@ -283,8 +286,8 @@ Save custom objects in InternalStorage:
 
             return object;
         }
+     }
     }
-   }
   
  
 -----------------------------------------
@@ -293,7 +296,7 @@ Save custom objects in InternalStorage:
 
 A class that uses base 64 to encode and decode strings
 
-   public class EncoderDecoder {
+    public class EncoderDecoder {
 
     public EncoderDecoder(){
     }
@@ -327,6 +330,6 @@ A class that uses base 64 to encode and decode strings
 
             return decodedString;
         }
+     }
     }
-   }
 
