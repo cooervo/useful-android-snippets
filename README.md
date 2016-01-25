@@ -1,3 +1,19 @@
+# Index
+
+1. [Validator](#validator): Helper class to help verify if strings are name, last names, phone number and email are valid
+
+2. [EditText TextValidator](#textvalidator): An abstract class with abstract method `validate()` to let subclass to customize its implementation
+
+3. [Singleton](#singleton): Singleton is encouraged by Android documentation instead of using Application class and it is great use for models in MVP pattern. This singleton pattern is based on Head First Java Singletton example.
+
+4. [PriceFormatter](#priceformatter): Helper class that takes a number and formats it into a suitable string representation of price
+
+5. [InternalStorage](#internalstorage): Save custom objects in InternalStorage.
+
+6. [EncoderDecoder](#encoderdecoder): A class that uses base 64 to encode and decode
+
+-----------------------------------------------------
+
 # Validator
 
 Helper class to help verify if strings are name, last names, phone number and email are valid
@@ -50,14 +66,11 @@ Helper class to help verify if strings are name, last names, phone number and em
         }
     }
   }
-  
-------------------------------
-------------------------------
-  
-  
-  # EditText TextValidator
-  
-  
+
+--------------------------------
+
+# TextValidator
+
   An abstract class with abstract method `validate()` to let subclass to customize its implementation
   
   
@@ -114,7 +127,7 @@ Helper class to help verify if strings are name, last names, phone number and em
 
 --------------------------------
 
-# Singleton example
+# Singleton
 
 Singleton is encouraged by Android documentation instead of using Application class and it is great use for models in MVP pattern. This singleton pattern is based on Head First Java Singletton example.
 
