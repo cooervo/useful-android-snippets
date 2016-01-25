@@ -1,6 +1,6 @@
 # Validator
 
-Helper class to help verify if names, phone number and email are valid
+Helper class to help verify if strings are name, last names, phone number and email are valid
 
     public class Validator {
    
