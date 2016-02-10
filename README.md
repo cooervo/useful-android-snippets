@@ -12,6 +12,9 @@
 
 6. [EncoderDecoder](#encoderdecoder): A class that uses base 64 to encode and decode
 
+7. [Picasso](#picasso): Picasso example snippet to avoid memory leak
+
+
 -----------------------------------------------------
 
 # Validator
@@ -348,4 +351,19 @@ A class that uses base 64 to encode and decode strings
             }
          }
     }
+    
+    
+     
+-----------------------------------------
+
+# Picasso
+
+     Picasso.with(ActivityExample.this)                   //Activity context
+                    .load(object.getImageUrl())           
+                    .placeholder(R.mipmap.placeholder)    //Place holder mipmap if needed
+                    .fit()                                //Fits image and avoids memory leak
+                    .centerCrop()                         //makes image to not stretch
+                    .into(imageView);
+
+
 
