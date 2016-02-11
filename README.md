@@ -14,6 +14,10 @@
 
 7. [Picasso](#picasso): Picasso example snippet to avoid memory leak
 
+8. [Keyboard-open-close-listener](#keyboard-open-closed-listener): A hack using rootView height to determine when keyboard is opened.
+
+9. [LeakMemoryFixes](#LeakMemoryFixes): Common fixes for memory leaks in android
+
 
 -----------------------------------------------------
 
@@ -366,4 +370,102 @@ A class that uses base 64 to encode and decode strings
                     .into(imageView);
 
 
+-----------------------------------------
 
+# Keyboard-Open-Closed-Listener
+
+Since there is no way to know when software keyboard is opened in android we use the rootView and listen to changes in its height to determine when is keyboard shown.  This is also useful for tablets since there is not change when keyboard is present since rootView height does not changes.
+
+
+@Override
+    protected void onResume() {
+        super.onResume();
+
+
+        mapWrapperKeyboardListener();
+    }
+
+
+    private void mapWrapperKeyboardListener() {
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            /**
+             * Use onGlobalLayout so that once global layout is ready we can getHeight, otherwise heights/widths will
+             * give = 0.
+             */
+            @Override
+            public void onGlobalLayout() {
+
+                //Get layouts of mapWrapper
+                ViewGroup.LayoutParams mapWrapperParams = mapWrapper.getLayoutParams();
+
+                //Map Height is going to be = rootView.getHeight * 0.4
+                int originalMapHeight = (int) Math.round(rootView.getHeight() * 0.4);
+
+                //HeightDiff = rootView.getRootView (the rootView of the rootview duh!) - rootView.getView
+                int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
+
+                //if keyboard was opened
+                if (heightDiff > 100) {
+                    
+                    //Change mapWrapperParams height to a fraction of originalMapHeight
+                    mapWrapperParams.height = (int) Math.round(originalMapHeight * 0.9);
+                }
+
+                //if keyboard was closed
+                if (heightDiff < 100) {
+                    //Change mapWrapperParams height to originalMapHeight
+                    mapWrapperParams.height = originalMapHeight;
+
+                }
+
+                //Now set the changed in mapWrapperParams
+                mapWrapper.setLayoutParams(mapWrapperParams);
+
+            }
+        });
+    }
+
+
+-----------------------------------------
+
+# LeakMemoryFixes
+
+### 1. Fix your contexts: 
+Try using the appropiate context: For example since a Toast can be seen in many activities instead of one use `getApplicationContext()` for toasts, and since services can keep running even though an activity has ended start a service with: 
+
+`Intent myService = new Intent(getApplicationContext(), MyService.class)`
+
+Use this table as a quick guide for what context is appropiate:
+[![enter image description here][1]][1]
+
+Original [article on context here][2].
+
+### 2. Check that you're actually finishing your services.
+
+For example I have an intentService that use google location service api. And I forgot to call `googleApiClient.disconnect();`:
+
+    //Disconnect from API onDestroy()
+        if (googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, GoogleLocationService.this);
+            googleApiClient.disconnect();
+        }
+
+
+### 3. Check image and bitmaps usage:
+If you are using square's **library Picasso** I found I was leaking memory by not using the `.fit()`, that drastically reduced my memory footprint from 50MB in average to less than 19MB:
+
+    Picasso.with(ActivityExample.this)                   //Activity context
+                    .load(object.getImageUrl())           
+                    .fit()                                //This avoided the OutOfMemoryError
+                    .centerCrop()                         //makes image to not stretch
+                    .into(imageView);
+
+
+### 4. If you are using using broadcast receivers unregister them.
+
+### 5. If you are using `java.util.Observer` (Observer pattern):
+Make sure to    to use `deleteObserver(observer);`
+ 
+  [1]: http://i.stack.imgur.com/1o5MI.png
+  [2]: https://possiblemobile.com/2013/06/context/
