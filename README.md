@@ -16,7 +16,7 @@
 
 8. [Keyboard-open-close-listener](#keyboard-open-closed-listener): A hack using rootView height to determine when keyboard is opened.
 
-9. [LeakMemoryFixes](#LeakMemoryFixes): Common fixes for memory leaks in android
+9. [LeakMemoryFixes](#leakmemoryfixes): Common fixes for memory leaks in android
 
 
 -----------------------------------------------------
